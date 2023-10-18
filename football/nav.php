@@ -19,23 +19,33 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Tournament</a>
+            <a class="navbar-brand" href="home.php">Tournament</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="match_create.php">Register Match</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="show.php">Show Match</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="match_create.php">Register Match</a>
+                        <a class="nav-link active" href="event_show.php">Show Event wise Team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="teams.php">Registered teams</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="vanue.php">Vanue</a>
                     </li>
                 </ul>
             </div>
             <div class="d-flex justify-content-end">
 
-                <img class="card-1-img" src="football-157930_1280.webp">
+                <a href="home.php"><img class="card-1-img" src="football-157930_1280.webp"></a>
 
             </div>
         </div>

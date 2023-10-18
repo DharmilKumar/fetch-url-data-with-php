@@ -45,25 +45,56 @@
                 $sdateErr = "Date is required";
             }
 
+            $date =  date('Y-m-d');
+            if ($sdate >= $date) {
 
-            
-            if (!empty($eName) && !empty($teamName) && !empty($color) && !empty($sdate)) {
-                $sql = "INSERT INTO football(team,ename,sdate,color) VALUES ('$teamName','$eName','$sdate','$color')";
-                if ($conn->query($sql)) {
-                    echo "<script type='text/javascript'>alert('Match Registered!');window.location='match_create.php'</script>";
-                } else {
-                    echo "Error " . $conn->error;
+                if (!empty($eName) && !empty($teamName) && !empty($color) && !empty($sdate)) {
+                    if ($sdate > '2023-12-30' && $eName == 'NPL') {
+                        echo "<script type='text/javascript'>alert('NPL is not Available at this date!');window.location='match_create.php'</script>";
+                    } elseif ($sdate > '2023-11-30' && $eName == 'MPL') {
+                        echo "<script type='text/javascript'>alert('MPL is not Available at this date!');window.location='match_create.php'</script>";
+                    } elseif ($sdate > '2023-10-30' && $eName == 'APL') {
+                        echo "<script type='text/javascript'>alert('APL is not Available at this date!');window.location='match_create.php'</script>";
+                    } elseif ($sdate > '2023-10-23' && $eName == 'SPL') {
+                        echo "<script type='text/javascript'>alert('SPL is not Available at this date!');window.location='match_create.php'</script>";
+                    } else {
+                        $sqlname = "SELECT * FROM football WHERE team='$teamName' AND sdate='$sdate'";
+                        $resultname = mysqli_query($conn, $sqlname);
+                        if (mysqli_num_rows($resultname) > 0) {
+                            echo "<script type=\"text/javascript\">alert(\"This Team already exists for event on that day.\");</script>";
+                        } else {
+                            $sql = "INSERT INTO football(team,ename,sdate,color) VALUES ('$teamName','$eName','$sdate','$color')";
+                            if ($conn->query($sql)) {
+                                echo "<script type='text/javascript'>alert('Match Registered!');window.location='match_create.php'</script>";
+                            } else {
+                                echo "Error " . $conn->error;
+                            }
+                        }
+                    }
                 }
+            } else {
+                
+                $sdateErr = "Please select valid date!!!";
             }
         }
 
         ?>
+        <marquee style="color: red;">
+            <b>NPL</b> last date is: 2023-12-30, <b>MPL</b> last date is: 2023-11-30, <b>APL</b> last date is: 2023-10-30, <b>SPL</b> last date is: 2023-10-23..
+        </marquee>
         <div class="card mx-auto mt-5" style="width: 30rem;">
             <div class="card-body">
+
                 <form action="" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="event" class="form-label">Enter Event Name</label>
-                        <input type="text" class="form-control" id="event" name="event">
+                        <!-- <input type="text" class="form-control" id="event" name="event"> -->
+                        <select class="dropdown show form-control" name="event">
+                            <option class="dropdown-menu " value="NPL" id="event">NPL</option>
+                            <option class="dropdown-item" value="MPL" id="event">MPL</option>
+                            <option class="dropdown-item" value="APL" id="event">APL</option>
+                            <option class="dropdown-item" value="SPL" id="event">SPL</option>
+                        </select>
                         <span class="w"><?php echo $eNameErr; ?></span>
                     </div>
                     <div class="mb-3">
@@ -73,12 +104,20 @@
                     </div>
                     <div class="mb-3">
                         <label for="color" class="form-label">Enter Team Color</label>
-                        <input type="text" class="form-control" id="color" name="color">
+                        <select class="dropdown show form-control" name="color">
+                            <option class="dropdown-menu " value="red" id="color">Red</option>
+                            <option class="dropdown-item" value="blue" id="color">Blue</option>
+                            <option class="dropdown-item" value="yellow" id="color">Yellow</option>
+                            <option class="dropdown-item" value="green" id="color">Green</option>
+                            <option class="dropdown-item" value="black" id="color">Black</option>
+                            <option class="dropdown-item" value="orange" id="color">Orange</option>
+                            <option class="dropdown-item" value="brown" id="color">Brown</option>
+                        </select>
                         <span class="w"><?php echo $colorErr; ?></span>
                     </div>
                     <div class="mb-3">
                         <label for="sdate" class="form-label">Start Date</label>
-                        <input type="date" class="form-control" id="sdate" name="sdate">
+                        <input type="date" class="form-control" id="sdate" name="sdate" required>
                         <span class="w"><?php echo $sdateErr; ?></span>
                     </div>
 

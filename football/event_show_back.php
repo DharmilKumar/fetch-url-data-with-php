@@ -15,9 +15,13 @@
     <?php require_once 'nav.php';
 
     require_once 'conn.php';
-    $edateErr = $sdateErr = $sdate = $edate = $colorErr =  "";
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (!empty($_POST['event'])) {
+            $event = $_POST['event'];
+        } else {
+            $sdateErr = "Date is required";
+        }
         if (!empty($_POST['sdate'])) {
             $sdate = $_POST['sdate'];
         } else {
@@ -33,14 +37,13 @@
     $date =  date('Y-m-d');
     $sqldel = "DELETE FROM football WHERE sdate<'$date'";
     $conn->query($sqldel);
-
     $sql  = "SELECT * FROM football WHERE sdate BETWEEN '$sdate' AND '$edate'";
     $result = mysqli_query($conn, $sql);
     $count = count(mysqli_fetch_row($result));
-
+    $count1 = 0;
 
     ?>
-    <h3 class="text-center">Match Date: <?php echo $sdate; ?> To <?php echo $edate; ?></h3>
+    <h3 class="text-center">Event Name: <?php echo $event; ?>Match Date: <?php echo $sdate; ?> To <?php echo $edate; ?></h3>
     <table class="table mx-auto mt-5" style="width: 35rem;">
         <thead>
             <tr>
@@ -59,23 +62,39 @@
                     $ename = $row['ename'];
                     $team = $row['team'];
                     $color = $row['color'];
-                    echo '
-                        <td>' . $ename . '</td>
-                        <td>' . $team . '</td>
-                        <td>' . $sdate . '</td>                        
-                        <td>' . '<span class="material-symbols-outlined" style="color:"'.$color.'",font-size="20px";">
-                        laundry
-                        </span>' . '</td>
-                    ';
+                    
+                    
+                    // echo  $ename . " " . $event;
+                    if($ename==$event){
+                        if ($event == $ename) {
+                            echo '
+                            <td>' . $ename . '</td>
+                            <td>' . $team . '</td>
+                            <td>' . $sdate . '</td>                        
+                            <td>' .'<span class="material-symbols-outlined" style="color:"'.$color.'",font-size="20px";">
+                            laundry
+                            </span>' . '</td>
+                        ';
+                        $count1+=1;
+                        }
+                    }
                 ?>
             </tr>
         <?php
 
                 }
+                if($count1==0){
+                    echo "<script type='text/javascript'>alert('No match found!');window.location='event_show.php'</script>";
+                }
 
         ?>
         </tbody>
     </table>
+    <span class="material-symbols-outlined" style="color:'red',font-size='20px';">
+                        laundry
+                        </span>
+                        
+<i class="material-icons" style="font-size:60px;color:red;">laundry</i>
 </body>
 
 </html>
